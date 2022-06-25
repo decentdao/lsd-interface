@@ -19,7 +19,7 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, provider } = configureChains(
-  [chain.goerli],
+  [chain.goerli, chain.mainnet],
   [
     publicProvider(),
   ]

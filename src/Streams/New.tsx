@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 import { ReactNode, useEffect, useState } from "react";
 import { useEnsAddress, useToken } from "wagmi";
-import Button from "../Button";
+import { Button } from "../Button";
 import { InputAddress, InputAmount, InputNumber } from "../Input";
 import PageHeader from "../PageHeader";
 import useValidAddress from "../useValidAddress";

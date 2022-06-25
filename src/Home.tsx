@@ -1,35 +1,24 @@
 import { Link } from "react-router-dom";
-import { useAccount } from "wagmi";
-import PageHeader from "./PageHeader";
-import Button from './Button';
-
-function CanNewStream() {
-  const { data } = useAccount();
-
-  if (!data) {
-    return (
-      <div>
-        Connect your wallet to create a New Stream.
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <Link to="streams/new">
-        <Button>
-          New Stream
-        </Button>
-      </Link>
-    </div>
-  )
-}
+import { SecondaryButton } from './Button';
+import H1 from "./H1";
+import H2 from "./H2";
 
 function Home() {
   return (
-    <div>
-      <PageHeader>Home</PageHeader>
-      <CanNewStream />
+    <div className="flex-grow flex flex-col justify-center">
+      <div className="mb-6">
+        <H1>Liquid Streaming Derivatives</H1>
+      </div>
+      <div className="mb-6">
+        <H2>Unlock the potential of your vesting tokens.</H2>
+      </div>
+      <div>
+        <Link to="streams">
+          <SecondaryButton>
+            {`Launch app ->`}
+          </SecondaryButton>
+        </Link>
+      </div>
     </div>
   );
 }
