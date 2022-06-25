@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 import PageHeader from "./PageHeader";
+import Button from './Button';
 
 function CanNewStream() {
   const { data } = useAccount();
@@ -16,7 +17,9 @@ function CanNewStream() {
   return (
     <div>
       <Link to="streams/new">
-        New Stream
+        <Button>
+          New Stream
+        </Button>
       </Link>
     </div>
   )
