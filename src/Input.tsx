@@ -1,5 +1,6 @@
 function Input({
   value,
+  placeholder,
   type,
   min,
   disabled,
@@ -7,6 +8,7 @@ function Input({
   onKeyDown,
 }: {
   value: string,
+  placeholder?: string,
   type: string,
   min: string | number | undefined,
   disabled: boolean,
@@ -14,12 +16,13 @@ function Input({
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement> | undefined,
 }) {
   return (
-    <div className="mb-4">
+    <div className="mb-6">
       <input
         type={type}
         min={min}
-        className={`w-full border rounded py-1 px-2 shadow-inner ${disabled ? "disabled" : ""}`}
+        className="w-full border-2 rounded border-black py-1 px-2"
         value={value}
+        placeholder={placeholder}
         onChange={onChange}
         disabled={disabled}
         onKeyDown={onKeyDown}
@@ -34,16 +37,19 @@ function Input({
 
 function InputAddress({
   value,
+  placeholder,
   disabled,
   onChange,
 }: {
   value: string,
+  placeholder?: string,
   disabled: boolean,
   onChange: (newValue: string) => void,
 }) {
   return (
     <Input
       value={value}
+      placeholder={placeholder}
       type="text"
       min={undefined}
       disabled={disabled}
@@ -55,11 +61,13 @@ function InputAddress({
 
 function InputAmount({
   value,
+  placeholder,
   decimals,
   disabled,
   onChange,
 }: {
   value: string,
+  placeholder?: string,
   decimals: number | undefined,
   disabled: boolean,
   onChange: (newValue: string) => void,
@@ -82,6 +90,7 @@ function InputAmount({
   return (
     <Input
       value={value}
+      placeholder={placeholder}
       type="number"
       min={0}
       disabled={disabled}
@@ -93,10 +102,12 @@ function InputAmount({
 
 function InputNumber({
   value,
+  placeholder,
   disabled,
   onChange,
 }: {
   value: string,
+  placeholder?: string,
   disabled: boolean,
   onChange: (newValue: string) => void,
 }) {
@@ -107,6 +118,7 @@ function InputNumber({
   return (
     <Input
       value={value}
+      placeholder={placeholder}
       type="number"
       min={0}
       disabled={disabled}

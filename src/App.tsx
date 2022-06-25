@@ -5,7 +5,7 @@ import Streams from './Streams';
 
 function App() {
   return (
-    <div className="container min-h-screen flex flex-col">
+    <div className="container min-h-screen flex flex-col pb-8">
       <Header />
       <Routes>
         <Route
