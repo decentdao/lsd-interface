@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import PageHeader from "./PageHeader";
 
 function Home() {
   return (
     <div>
-      <div className="border-b pb-4 mb-4 text-2xl">Home</div>
+      <PageHeader>Home</PageHeader>
       <div>
         <Link to="streams/new">
           New Stream

@@ -1,6 +1,10 @@
+import PageHeader from "../PageHeader";
+
 function New() {
   return (
-    <div>New stream</div>
+    <div>
+      <PageHeader>New Stream</PageHeader>
+    </div>
   );
 }
 
