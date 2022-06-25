@@ -5,27 +5,29 @@ import Streams from './Streams';
 
 function App() {
   return (
-    <div className="container">
+    <div>
       <Header />
-      <Routes>
-        <Route
-          index
-          element={<Home />}
-        />
-        <Route
-          path="streams/*"
-          element={<Streams />}
-        />
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="."
-              replace={true}
-            />
-          }
-        />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route
+            index
+            element={<Home />}
+          />
+          <Route
+            path="streams/*"
+            element={<Streams />}
+          />
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="."
+                replace={true}
+              />
+            }
+          />
+        </Routes>
+      </div>
     </div>
   );
 }
