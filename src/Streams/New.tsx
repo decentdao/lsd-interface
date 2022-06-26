@@ -1,12 +1,13 @@
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import { useBlockNumber, useEnsAddress, useProvider, useToken } from "wagmi";
+import { Link, useNavigate } from 'react-router-dom';
+import { useBlockNumber, useEnsAddress, useProvider, useToken, useContractWrite } from "wagmi";
 import { Button, SecondaryButton } from "../Button";
 import { InputAddress, InputAmount, InputNumber } from "../Input";
 import PageHeader from "../PageHeader";
 import useValidAddress from "../useValidAddress";
 import useAmount from "../useAmount";
+import { IERC20__factory, StreamCreator__factory } from "../typechain-types";
 
 type Recipient = {
   id: number;
@@ -222,6 +223,8 @@ function New() {
     setSymbol(tokenData.symbol);
   }, [tokenData]);
 
+  const navigate = useNavigate();
+
   const [valid, setValid] = useState(false);
   useEffect(() => {
     if (
@@ -234,6 +237,53 @@ function New() {
 
     setValid(true);
   }, [maturationTimestamp, tokenData]);
+
+  const { write: writeApprove } = useContractWrite({
+    addressOrName: tokenAddress,
+    contractInterface: IERC20__factory.abi,
+  },
+    'approve',
+    {
+      args: [
+        "0x6664cf0845028f5e24675ef913d3d0404846e14a",
+        recipients.reduce((p, c) => (c.amount || BigNumber.from(0)).add(p), BigNumber.from(0)),
+      ]
+    }
+  )
+
+  const { write: writeStream } = useContractWrite({
+    addressOrName: '0x6664cf0845028f5e24675ef913d3d0404846e14a',
+    contractInterface: StreamCreator__factory.abi,
+  },
+    'CreateRound',
+    {
+      args: [[
+        // IERC20 _pToken;
+        tokenAddress,
+        // address _dTokenImpl;
+        "0xf3d36a00741950a1d53299d70a53b5402662c21e",
+        // string _xName;
+        `x-${symbol}`,
+        // string _xSymbol;
+        `x${symbol}`,
+        // string _dName;
+        `d-${symbol}`,
+        // string _dSymbol;
+        `d${symbol}`,
+        // address _streamImpl;
+        "0xabde60f875bc1e3619db381ac142f8c5f5f5f386",
+        // address[] _investors;
+        recipients.map(r => r.address),
+        // uint256[] _allocations;
+        recipients.map(r => r.amount),
+        // uint256 _maturityTime;
+        maturationTimestamp,
+      ]],
+      onSettled(data, error) {
+        navigate("..", { state: { showN1: true }});
+      },
+    },
+  )
 
   return (
     <div className="border-2 border-black rounded-lg sm:w-10/12 md:w-8/12 lg:w-6/12 mx-auto">
@@ -273,12 +323,35 @@ function New() {
         />
       </div>
       <div className="p-6 flex justify-between">
+
         <Link to="..">
-          <Button>Cancel</Button>
+          <div>
+            <Button>Cancel</Button>
+          </div>
         </Link>
-        <SecondaryButton disabled={!valid}>
-          Confirm
-        </SecondaryButton>
+
+        <div className="flex">
+          <div className="mr-2">
+            <SecondaryButton
+              disabled={!valid}
+              onClick={() => {
+                writeApprove();
+              }}
+            >
+              Approve
+            </SecondaryButton>
+          </div>
+          <div>
+            <SecondaryButton
+              disabled={!valid}
+              onClick={() => {
+                writeStream();
+              }}
+            >
+              Confirm
+            </SecondaryButton>
+          </div>
+        </div>
       </div>
     </div>
   );
